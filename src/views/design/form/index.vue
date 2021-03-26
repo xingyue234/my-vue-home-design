@@ -8,12 +8,12 @@
             <div class="design-form-body">
 
                 <!-- 模版样式选择 -->
-                <unit-panel title="组件样式" :desc="component.template_title">
+                <!-- <unit-panel title="组件样式" :desc="component.template_title">
                     <template-selector
                         v-model="component.template_id"
                         :list="component.template_list"
                         @onChange="handle_update_template"/>
-                </unit-panel>
+                </unit-panel> -->
             
                 <!-- 循环当前已有的模版列表 -->
                 <template v-for="(tmp, index) in component.template_list">
@@ -85,6 +85,7 @@ export default {
          * 监听选中的组件ID，如果有变更，则重新加载数据
          */
         selected_id () {
+            console.log(this.$store.state.design, 'design')
             this.component = this.$store.state.design.selected_vdc;
         }
     },

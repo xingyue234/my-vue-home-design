@@ -2,22 +2,10 @@
     <div>
         <!-- 循环样式配置项 -->
         <template v-for="(group, index) in layout">
-            <div
+            <unit-panel 
                 :key="index"
-                :class="{
-                    'form-group': true,
-                    'is-hide': slideup_group_index.includes(index)
-                }">
-
-                <!-- 标题 -->
-                <div class="form-group-title" @click="handle_group_toggle(index)">
-                    <a-icon type="caret-down"/>
-                    {{ group.title }}
-                </div>
-
-                <div class="form-group-body">
-
-                    <template v-for="key in group.groups">
+                :title="group.title">
+                <template v-for="key in group.groups">
                         <!-- 如果是自定义的组件 -->
                         <component
                             v-if="is_diy(configs[key].type)"
@@ -42,7 +30,7 @@
                                 <a-input
                                     v-model="configs[key].value"
                                     size="large"
-                                    :maxlength="configs[key].max || 200"
+                                    :max-length="configs[key].max || 200"
                                     placeholder="请输入">
                                 </a-input>
                             </template>
@@ -81,8 +69,22 @@
                             </template>
                         </div>
                     </template>
+            </unit-panel>
+            <!-- <div
+                :key="index"
+                :class="{
+                    'form-group': true,
+                    'is-hide': slideup_group_index.includes(index)
+                }">
+
+                <div class="form-group-title" @click="handle_group_toggle(index)">
+                    <a-icon type="caret-down"/>
+                    {{ group.title }}
                 </div>
-            </div>
+
+                <div class="form-group-body">
+                </div>
+            </div> -->
         </template>
     </div>
 </template>
@@ -100,6 +102,7 @@ import {
     page,
     sort
 } from './form-unit/index.js';
+import unitPanel from './form-unit/unit-panel'
 
 export default {
     props: ['type', 'layout', 'configs', 'rootConfig'],
@@ -117,8 +120,12 @@ export default {
                 page,
                 sort
             },
-            slideup_group_index: [], // 记录隐藏的配置集合的索引值，默认全部展开
+            // slideup_group_index: [], // 记录隐藏的配置集合的索引值，默认全部展开
         }
+    },
+
+    components: {
+        unitPanel
     },
 
     methods: {
@@ -170,13 +177,13 @@ export default {
          * 收起/展开 配置项组合
          * @param {Number} index 组合数组索引
          */
-        handle_group_toggle (index)  {
-            if (this.slideup_group_index.includes(index)) {
-                this.slideup_group_index = this.slideup_group_index.filter(x => x != index);
-            } else {
-                this.slideup_group_index.push(index);
-            }
-        }
+        // handle_group_toggle (index)  {
+        //     if (this.slideup_group_index.includes(index)) {
+        //         this.slideup_group_index = this.slideup_group_index.filter(x => x != index);
+        //     } else {
+        //         this.slideup_group_index.push(index);
+        //     }
+        // }
     }
 }
 </script>

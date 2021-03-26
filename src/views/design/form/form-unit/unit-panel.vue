@@ -1,5 +1,5 @@
 <template>
-    <div class="form-group" ref="dom">
+    <div class="form-group" :class="{'is-hide': isHide}" ref="dom">
         <!-- 标题 -->
         <div class="form-group-title" @click="handle_toogle_slide">
             <a-icon type="caret-down" v-if="slide"/>
@@ -35,6 +35,11 @@ export default {
             default: true
         }
     },
+    data () {
+        return {
+            isHide: false
+        }
+    },
     methods: {
         /**
          * 通过 class 来 [收起/展开] 内容
@@ -42,10 +47,12 @@ export default {
         handle_toogle_slide () {
             // 判断是否开启了功能
             if (!this.slide) return false;
+            this.isHide = !this.isHide
+
             // 判断当前状态
-            const dom = $(this.$refs.dom);
-            const class_name = 'is-hide';
-            dom.hasClass(class_name) ? dom.removeClass(class_name) : dom.addClass(class_name);
+            // const dom = $(this.$refs.dom);
+            // const class_name = 'is-hide';
+            // dom.hasClass(class_name) ? dom.removeClass(class_name) : dom.addClass(class_name);
         }
     }
 }
