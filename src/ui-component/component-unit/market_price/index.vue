@@ -9,7 +9,10 @@
         :data-orgp="value"
         :data-currency="currency"
         :data-original_amount="value">
-            ${{ value }}
+            <span class="small-txt">￥</span><span class="big-txt">{{ String(value).substring(0, String(value).length - 3) }}</span>
+            <span class="small-txt tans">
+                {{String(value).substring(String(value).length - 3)}}
+            </span>
     </span>
 </template>
 
@@ -54,5 +57,18 @@ export default {
 <style lang="less" scoped>
     span.is-del {
         text-decoration: line-through;
+    }
+    span{
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    span .big-txt{
+        font-size: inherit;
+    }
+    span .small-txt{
+        font-size: 12px;
+    }
+    span .small-txt:last-child{
+        position: relative;
+        left: -4px;
     }
 </style>

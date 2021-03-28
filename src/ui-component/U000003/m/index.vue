@@ -14,15 +14,15 @@
 
                 <!--商品图片-->
                 <div class="item-image">
+                    <div class="image-goods">
+                        <unit-goods-image
+                            :src="item.goods_img"
+                            :sku="item.goods_sn"
+                            :index="index" />
+                    </div>
                     
-                    <a :href="item.goods_number > 0 ? item.url_title: 'javascript:void(0);'">
-                        <div class="image-goods">
-                            <unit-goods-image
-                                :src="item.goods_img"
-                                :sku="item.goods_sn"
-                                :index="index" />
-                        </div>
-                    </a>
+                    <!-- <a :href="item.goods_number > 0 ? item.url_title: 'javascript:void(0);'">
+                    </a> -->
 
                     <!--sold out-->
                     <div class="item-soldOut" v-if="item.goods_number <= 0">
@@ -49,13 +49,13 @@
                             </div>
                         </div>
                         <!--市场价-->
-                        <div class="item-market">
+                        <!-- <div class="item-market">
                             <unit-market-price
                                 :value="item.market_price"
                                 :shop-price="item.shop_price"
                                 :config="styles">
                             </unit-market-price>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -137,11 +137,20 @@ export default {
             return this.$store.state.page.env;
         },
         list () {
-            if (this.datas.goods.length <= 0) {
+            let goods = this.datas.goods
+            if (goods instanceof Array) {
+                if (goods.length > 0) {
+                    return goods;
+                } else {
+                    return default_goods_list;
+                }
+            } else if (goods instanceof Object) {
+                // 请求后台分组对应的商品数据  goods.id
                 return default_goods_list;
             } else {
-                return this.datas.goods;
+                return default_goods_list;
             }
+            
         },
         // 背景整体式
         whole () {
@@ -191,7 +200,10 @@ export default {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                height: 228/37.5rem;
+                height: 180/37.5rem;
+                .image-goods{
+                    height: 100%;
+                }
 
                 .image-goods img{
                     width: 100%;
@@ -201,23 +213,25 @@ export default {
             // 商品详情
             .item-info {
                 padding-left: 12/37.5rem;
-                margin-bottom: 12/37.5rem;
+                margin-bottom: 8/37.5rem;
             }
             // 标题
             .item-title{
                 box-sizing: content-box;
                 width: 147/37.5rem;
                 font-size: 11/37.5rem;
-                height: 15/37.5rem;
+                height: 30/37.5rem;
                 line-height: 15/37.5rem;
 
                 overflow:hidden;
                 text-overflow: ellipsis;
-                white-space: nowrap;
+                display:-webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
                 word-break: keep-all;
                 word-wrap: break-word;
 
-                padding-top: 9/37.5rem;
+                padding-top: 8/37.5rem;
                 margin-bottom: 4/37.5rem;
                 color: #333333;
                 a {
@@ -241,7 +255,7 @@ export default {
                 align-items: baseline;
 
                 .shop-title {
-                    font-size: 13/37.5rem;
+                    font-size: 12px;
                     max-width: 147/37.5rem;
                     overflow: hidden;
                     text-overflow: ellipsis;
@@ -308,7 +322,7 @@ export default {
 
             // 商品图片
             .item-image{
-                height: 212/37.5rem;
+                height: 180/37.5rem;
             }
 
             // 商品详情

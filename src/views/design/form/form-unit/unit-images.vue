@@ -72,9 +72,9 @@
 <script>
 
 // 图片管理弹窗
-import imagesSort from "../../../../system-components/images-sort/index.vue";
-import imagesManager from "../../../../system-components/images-manager/index.vue";
-import goodsSourceManager from "../../../../system-components/dialog-goods-manager/choose-good.vue";
+import imagesSort from "../images-sort/index.vue";
+import imagesManager from "../images-manager/index.vue";
+import goodsSourceManager from "../dialog-goods-manager/choose-good.vue";
 
 // Main code
 export default {

@@ -68,6 +68,8 @@ export default {
     display: flex;
     align-items: center;
     align-content: center;
+    height: 100%;
+    overflow: hidden;
     img {
         width: 100%;
     }

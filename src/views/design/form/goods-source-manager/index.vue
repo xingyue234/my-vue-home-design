@@ -36,7 +36,7 @@
 <script>
 
 // 商品数据
-import goodsManager from '@/system-components/dialog-goods-manager/index.vue';
+import goodsManager from '../dialog-goods-manager/index.vue';
 
 export default {
     name: 'goods-source-manager',

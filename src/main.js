@@ -27,10 +27,7 @@ import api from './interface/index.js'
 Vue.prototype.$api = api;
 
 // 所有的UI组件的公共控件
-import All_form_unit from './system-components/form-unit/index.js';
-Vue.use(All_form_unit);
-
-import All_ui_unit from './ui-component/component-unit/index.js'; // 所有的UI组件的公共控件
+import All_ui_unit from './ui-component/component-unit/index.js'; 
 Vue.use(All_ui_unit);
 
 // 组件级别懒加载
