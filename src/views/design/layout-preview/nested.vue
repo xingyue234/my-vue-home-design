@@ -58,6 +58,7 @@ export default {
          * 拖拽结束事件变更
          */
         async handle_drag_change (data) {
+            console.log(data, '拖拽结束数据')
             // 新增组件模式
             if (data.hasOwnProperty('added')) {
                 const isPanel = data.added.element.hasOwnProperty('tasks');

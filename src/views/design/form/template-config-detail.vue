@@ -142,7 +142,7 @@ export default {
                 'sort'
             ];
             return map.includes(type);
-        },
+        },  
 
         // 设置数值最小
         set_number_min (val) {

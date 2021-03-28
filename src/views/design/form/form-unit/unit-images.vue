@@ -4,16 +4,39 @@
 
         <ul class="images-preview-list">
             <li v-for="(item, index) in current_value" :key="index">
-                <img :src="item.image">
-                <div class="controller-layer">
-                    <button @click="handle_zoom(item.image)">
-                        <a-icon type="zoom-in" />
-                        <label>放大</label>
-                    </button>
-                    <button @click="handle_remove(index)">
-                        <a-icon type="delete" />
-                        <label>删除</label>
-                    </button>
+                <div class="image-container">
+                    <img :src="item.image">
+                    <div class="controller-layer">
+                        <button @click="handle_zoom(item.image)">
+                            <a-icon type="zoom-in" />
+                            <label>放大</label>
+                        </button>
+                        <button @click="handle_remove(index)">
+                            <a-icon type="delete" />
+                            <label>删除</label>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 图片链接配置 -->
+                <div class="image-data">
+                    <div class="image-data-item">
+                        链接：
+                        <a-dropdown>
+                            <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+                                {{getValue(item)}} 
+                                <a-icon type="down" />
+                            </a>
+                            <a-menu slot="overlay">
+                                <a-menu-item  
+                                    v-for="item2 in select_options"
+                                    @click="selectHandler(item2, index)"
+                                    :key="item2.code">
+                                    <a href="javascript:;">{{ item2.name }}</a>
+                                </a-menu-item>
+                            </a-menu>
+                        </a-dropdown>
+                    </div>
                 </div>
             </li>
         </ul>
@@ -37,6 +60,12 @@
         <images-manager
             ref="imagesManager"
             @onSelected="handle_add_image" />
+
+        <!-- 商品管理器 -->
+        <goods-source-manager
+            ref="goodsSourceManager"
+            :value.sync="current_value"
+            @confirm="handle_dialog_good_confirm" />
     </div>
 </template>
 
@@ -45,6 +74,7 @@
 // 图片管理弹窗
 import imagesSort from "../../../../system-components/images-sort/index.vue";
 import imagesManager from "../../../../system-components/images-manager/index.vue";
+import goodsSourceManager from "../../../../system-components/dialog-goods-manager/choose-good.vue";
 
 // Main code
 export default {
@@ -66,14 +96,30 @@ export default {
     },
     components: {
         imagesSort,
-        imagesManager
+        imagesManager,
+        goodsSourceManager 
     },
     data () {
         return {
             current_value: this.value,
+            current_image_index: 0,  // 当前编辑的图片项目 index
             dialog: {
                 visible: false
-            }
+            },
+            select_options: [
+                {
+                    name: '商品',
+                    code: 'good-detail'
+                },
+                {
+                    name: '商品分组',
+                    code: 'good-category'
+                },
+                {
+                    name: '小程序微页面',
+                    code: 'design-page'
+                }
+            ]
         }
     },
 
@@ -84,6 +130,38 @@ export default {
     },
 
     methods: {
+        getValue (item) {
+            if (item.link_data && item.link_data.goods_title) {
+                return item.type.name + ' | ' + item.link_data.goods_title
+            } else {
+                return '设置链接到的页面地址'
+            }
+        },
+        /**
+         * 打开商品数据配置的弹窗
+        */
+        handle_open_dialog (item) {
+            this.$refs.goodsSourceManager.show(item,'7608891');
+        },
+
+        selectHandler(item, index) {
+            this.handle_open_dialog(item)
+            this.current_image_index = index
+            // if (item.key === 'good-detail') {
+            // } else if (item.key === 'good-category') {
+            // } else if (item.key === 'design-page') {
+            // }
+        },
+
+         /**
+         * 商品数据配置弹窗 - 确认回调
+         * @param {Array} list 商品数据列表
+         */
+        handle_dialog_good_confirm (info) {
+            this.value[this.current_image_index].type = info.type
+            this.value[this.current_image_index].link_data = info.link_data
+            this.$emit('input', this.value);
+        },
         /**
          * 打开商品数据配置的弹窗
          */
@@ -137,7 +215,9 @@ export default {
          */
         handle_add_image (url) {
             this.current_value.push({
-                image: url
+                image: url,
+                type: {},
+                link_data: {}
             });
         }
     }
@@ -169,10 +249,16 @@ export default {
         max-width: 100%;
         max-height: 100%;
     }
-    li:hover {
+    li .image-container:hover {
         .controller-layer {
             display: flex;
         }
+    }
+
+
+    // 图片链接
+    .image-data{
+        margin: 15px 0;
     }
     // 预览区域的按钮操作
     .controller-layer {

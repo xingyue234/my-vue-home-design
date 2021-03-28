@@ -36,6 +36,15 @@
             "description": "橱窗件",
             "tpl_id": 4,
             "icon": "ui-component-goodslist"
+        },
+        {
+            "id": 5,
+            "category_id": 1,
+            "component_key": "U000005",
+            "name": "商品搜索",
+            "description": "商品搜索件",
+            "tpl_id": 5,
+            "icon": "ui-component-goodslist"
         }
     ]
 }
