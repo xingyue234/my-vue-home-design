@@ -3,13 +3,8 @@
 [![Ant-deisgn](https://img.shields.io/badge/Antd-v1.3.10-brightgreen)](https://antdv.com/)
 [![Vue.Draggable](https://img.shields.io/badge/Vue.Draggable-v2.23.0-brightgreen)](https://github.com/SortableJS/Vue.Draggable)
 
-基于 ```vue``` + ```ant-design``` + ```vue-draggable``` 实现的可视化页面装修功能，基于业务需求和层出不穷的活动营销页面而诞生。  
-```类似的还有：有赞、百度H5、京东等等```, 后续会通过 [page-design-ssr](https://github.com/CullenNg/page-design-ssr) 服务来生成静态页面，这样就可以支持SSR需求拉
+基于 ```vue``` + ```ant-design``` + ```vue-draggable``` 实现的可视化页面装修功能
 
-[点我点我，查看演示DEMO](https://cullenng.github.io/page-design/#/home)
-
-
-![截图1.png](https://github.com/CullenNg/doc-images/blob/master/page-design/1.png)
 
 操作指引：
 1. 左侧组件区域拖拽至中间布局区域
@@ -17,22 +12,12 @@
 3. 点击中间区域的组件，右侧会打开组件支持的配置项
 4. 右侧楼层管理支持组件的排序、复制、删除、定位等
 
-## 目录
-* [查看演示 DEMO](https://cullenng.github.io/page-design/#/home)
-* 特点
-* 1. 自由拖拽组件
-* 2. 支持[M]端布局
-* 3. 支持实时预览，所见即所得
-* 4. 支持业务组件的自定义配置项（JSON）
-* 5. 支持快速创建自定义的业务组件
-* [安装](https://github.com/CullenNg/page-design#安装)
-* [启动](https://github.com/CullenNg/page-design#使用)
-* [代码目录](#代码目录)
 * 目前支持组件列表
-* 1. [标题栏](https://github.com/CullenNg/page-design#标题栏)
-* 2. [广告图](https://github.com/CullenNg/page-design#广告图)
-* 3. [商品列表](https://github.com/CullenNg/page-design#商品列表)
-* [更新日志](https://github.com/CullenNg/page-design#更新日志)
+* 1. [标题栏](#标题栏)
+* 2. [广告图](#广告图)
+* 3. [商品列表](#商品列表)
+* 4. [商品搜索](#商品列表)
+* 5. [橱窗](#商品列表)
 
 ## 安装
 ```
@@ -65,13 +50,6 @@ $ npm install
 │   ├── resource // 图片
 │   ├── router // 路由
 │   ├── store
-│   ├── system-components // 系统公共组件
-│   │   ├── dialog
-│   │   ├── dialog-goods-manager
-│   │   ├── form-unit
-│   │   ├── images-manager
-│   │   ├── images-sort
-│   │   └── ui-component-load
 │   ├── ui-component // 业务组件
 │   │   ├── U000001
 │   │   ├── U000002
@@ -85,34 +63,3 @@ $ npm install
 ├── webpack.dev.js
 └── webpack.prod.js
 ```
-
-## 业务组件配置项自定义
-[查看文档](https://github.com/CullenNg/page-design/blob/master/component-config.md)
-
-## 目前支持组件列表
-
-### 标题栏
-![标题栏演示.gif](https://github.com/CullenNg/doc-images/blob/master/page-design/QQ20200619-105646.gif)
-
-### 广告图
-![广告图演示.gif](https://github.com/CullenNg/doc-images/blob/master/page-design/QQ20200619-180450.gif)
-
-### 商品列表
-![商品列表演示.gif](https://github.com/CullenNg/doc-images/blob/master/page-design/QQ20200619-181911.gif)
-
-## 更新日志 
-
-### v1.0.1 [2020-07-02]
-1. 广告图组件：增加动画效果的选择，增加动画效果时间间隔配置
-2. 楼层管理：增加组件定位功能
-3. 楼层管理：增加组件复制功能
-
-### v1.0 [2020-06-15]
-1. 广告图组件: 调整图片加载的方法，优化UI，暂时去除其他配置项
-2. 标题栏组件: 增加 margin, padding, text-align 的配置项
-3. 商品列表组件：调整商品数据的增加方式
-4. 装修页：获取页面数据改为json获取
-5. 增加2个演示页面数据
-
-## 写在最后
-如有其他业务组件想增加的可以留言一下，或者搞个PR
