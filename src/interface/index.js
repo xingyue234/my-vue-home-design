@@ -26,11 +26,11 @@ export const design_get_component_template_list = () => {
  * 装修页面数据
  * @param {Number} page_id 页面ID, default = 1
  */
-export const design_get_page_info = (page_id = 1) => {
+export const design_get_page_info = (page_id = '') => {
     return new Promise((resolve, reject) => {
-        const json = require('./json-data/design_get_page_info.json');
-        const res = json.data.filter(x => x.pageId == page_id);
-        resolve(res[0]);
+		const json = require('./json-data/design_get_page_info.json');
+		const res = json.data.filter(x => x.pageId == page_id);
+		resolve(res[0]);
     });
 };
 

@@ -10,7 +10,7 @@
 
                 <!--渠道-->
                 <div class="channel">
-                    <span class="tip">页面：</span>
+                    <span class="tip">页面路径：</span>
                     <a-select
                         class="select-channel"
                         :value="current_pipeline"
@@ -87,7 +87,15 @@
             </a-col>
 
             <!-- 页面标题 -->
-            <a-col :span="7" class="middle">{{ title }}</a-col>
+            <a-col :span="7" class="middle">
+				<label>页面标题:</label>
+				<a-input
+				    :value="title"
+					@input="titleInput"
+				    :max-length="200"
+				    placeholder="请输入页面标题">
+				</a-input>
+			</a-col>
 
             <!-- 右侧功能区域 -->
             <a-col :span="6" class="right">
@@ -106,14 +114,15 @@ export default {
         return {
             title: '', // 活动标题
 
-            current_pipeline: '',  // 当前选择的渠道
+            current_pipeline: 'home',  // 当前选择的渠道
             current_lang: '', // 当前选择的语言
             current_platform: '', // 当前选择的端口
 
             select_options: {
                 // 所有渠道列表
                 pipelines: [
-                    { name: 'DEMO', code: 'ZF' }
+                    { name: '首页', code: 'home' },
+					{ name: '列表页', code: 'list' },
                 ],
                 // 所有语言列表
                 langs: [
@@ -135,6 +144,9 @@ export default {
     },
     
     methods: {
+		titleInput (e) {
+			this.$store.state.page.info.title = e.target.value
+		},
         /**
          * 渠道改变
          * @param {String} code 渠道编码
@@ -210,8 +222,10 @@ export default {
             .select-channel .ant-select-selection {
                 border: none;
                 box-shadow: none;
-                height: 42px;
             }
+			.select-channel .ant-select-selection--single{
+				height: auto;
+			}
             .select-channel .ant-select-selection__rendered{
                 line-height: 38px;
             }
@@ -316,6 +330,11 @@ export default {
         .channel {
             padding-left: 16px;
             min-width: 190px;
+			display: flex;
+			align-items: center;
+			.tip{
+				white-space: nowrap;
+			}
             .select-channel {
                 width: 122px;
             }
@@ -341,8 +360,14 @@ export default {
         justify-content: center;
         align-items: center;
         color: #3F4245;
-        font-size: 18px;
-        font-weight:600;
+		label{
+			white-space: nowrap;
+			padding-right: 10px;
+			padding-left: 20px;
+		}
+		.ant-input{
+			min-width: 200px;
+		}
     }
 
     .right {

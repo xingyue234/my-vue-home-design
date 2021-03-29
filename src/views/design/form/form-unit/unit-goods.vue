@@ -154,6 +154,7 @@ export default {
          */
         handle_clear_goods () {
             this.current_value = ''
+			this.$refs.chooseGoodsData.selectedRowKeys = []
             this.$emit('input', this.current_value);
         }
     }

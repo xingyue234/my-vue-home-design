@@ -12,11 +12,11 @@ export const constantRouterMap = [
         path: '/home',
         component: base,
         redirect: '/home/index',
-        meta: { name: '活动列表' },
+        meta: { name: '页面列表' },
         children: [
             {
                 path: 'index',
-                meta: { name: '活动列表', show_bread: false, },
+                meta: { name: '页面列表', show_bread: false, },
                 component: () => import('../views/home/index.vue')
             }
         ]

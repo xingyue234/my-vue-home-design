@@ -105,7 +105,6 @@ const design = {
          */
         page_load ({ state, dispatch }, page_id) {
             state.loading = true;
-
             // 装修页获取页面数据
             design_get_page_info(page_id).then(res => {
                 // 拼装页面数据
@@ -124,7 +123,7 @@ const design = {
                 // 11-10 通过 API 获取当前页面组件的商品数据 - Cullen
                 dispatch('page/load_remote_goods_data', {
                     is_first: 1
-                }, { root: true }); 
+                }, { root: true });
 
                 // 更新状态
                 state.loading = false;
@@ -172,7 +171,7 @@ const design = {
                     "platform": rootState.page.info.platform,
                     "components": cmpts_arr
                 };
-                console.log(JSON.stringify(saveParams));
+                console.log(saveParams, '参数');
 
                 
                 message.success('保存成功');

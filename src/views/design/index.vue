@@ -65,9 +65,40 @@ export default {
             this.$store.state.design.selected_id = null;
             this.$store.state.design.show_component_form = false;
 
-            const page_id = this.$route.query.id || 1;
+            const page_id = this.$route.query.id || '';
             // 请求页面数据
-            this.$store.dispatch('design/page_load', page_id);
+            if (page_id) {
+				this.$store.dispatch('design/page_load', page_id);
+			} else {
+				const res = {
+				    "pageTitle":"空白页",
+				    "lang":"en",
+				    "pageId": "",
+				    "platform":"wap",
+				    "banner": "",
+				    "components": []
+				}
+				const data = {
+				    page_id: res.pageId || '',
+				    lang: res.lang || 'en',
+				    platform: res.platform || 'm',
+				    title: res.pageTitle || '',
+				    components: res.components.map(x => new Vdc(x))
+				};
+
+				// 存储页面数据
+				this.$store.dispatch('page/load', data, { root: true });  
+				
+				// 11-10 通过 API 获取当前页面组件的商品数据 - Cullen
+				// this.$store.dispatch('page/load_remote_goods_data', {
+				//     is_first: 1
+				// }, { root: true });
+				
+				// 更新状态
+				this.$store.state.design.loading = false;
+				this.$store.state.design.first_loaded = true;
+				
+			}
         }
     },
 

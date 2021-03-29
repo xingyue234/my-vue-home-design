@@ -22,7 +22,7 @@
 
 // 生成随机颜色数组
 const getRandomColors = () => {
-    const colors = ['red', 'green', 'gray', 'purple', 'pink', 'blue', 'orange']
+    const colors = ['#0e778f', '#d8dbca', '#f3cfe1', '#ef8766', '#f8c76a', '#d9b9d7', '#92a624']
     let rdmColors = []
     for (var i = 0; i < 5; i++) {
         let color = colors[Math.floor(Math.random() * colors.length)]

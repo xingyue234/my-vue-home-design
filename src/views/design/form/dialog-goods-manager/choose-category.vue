@@ -111,7 +111,6 @@ export default {
          * @param {Array} list 商品列表
          */
         show (current_skus = {}) {
-            console.log(current_skus, 'current_skus')
             this.visible = true;
             this.list.map((x, index) => {
                 if (x.goods_id == current_skus.goods_id) {

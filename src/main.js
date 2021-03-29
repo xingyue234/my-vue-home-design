@@ -19,7 +19,7 @@ import router from './router/index.js'
 import store from './store/index.js'
 
 // 新统一样式弹出层
-import dialog from './system-components/dialog/dialog.vue'
+import dialog from './views/design/form/dialog/dialog.vue'
 Vue.component('design-dialog', dialog);
 
 // 接口

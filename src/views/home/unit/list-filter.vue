@@ -59,7 +59,9 @@ export default {
          * 新增首页
          */
         handle_new () {
-            
+			this.$router.push({
+			    path: `/design`,
+			});
         },
 
         /**
