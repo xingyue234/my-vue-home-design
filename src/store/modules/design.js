@@ -171,7 +171,7 @@ const design = {
                     "platform": rootState.page.info.platform,
                     "components": cmpts_arr
                 };
-                console.log(saveParams, '参数');
+                console.log(JSON.stringify(saveParams), '参数');
 
                 
                 message.success('保存成功');

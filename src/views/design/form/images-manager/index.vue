@@ -105,6 +105,10 @@ export default {
             loading_files: false,
         }
     },
+	
+	created () {
+		this.get_folder_details()
+	},
 
     methods: {
         /**
@@ -149,6 +153,7 @@ export default {
 
         // 读取目录内容
         handle_folder_selecte (selectedKeys, e) {
+			console.log(selectedKeys, e, '哈哈哈')
             if (e.selectedNodes[0]) {
                 this.selected_folder_keys = selectedKeys;
                 this.selected_folder_keys_backup = selectedKeys;
