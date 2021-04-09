@@ -26,6 +26,13 @@ Vue.component('design-dialog', dialog);
 import api from './interface/index.js'
 Vue.prototype.$api = api;
 
+// 后台接口
+import { service } from "@/cool";
+// Add Service
+Vue.prototype.$service = service;
+store.$service = service;
+
+
 // 所有的UI组件的公共控件
 import All_ui_unit from './ui-component/component-unit/index.js'; 
 Vue.use(All_ui_unit);

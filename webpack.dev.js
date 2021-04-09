@@ -24,6 +24,10 @@ module.exports = merge(common, {
 				pathRewrite: {
 					'^/proxy/': ''
 				}
+			},
+			'/admin': {
+				target: 'http://shop.creya.cn/',
+				changeOrigin: true
 			}
 		}
 	},

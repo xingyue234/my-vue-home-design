@@ -18,6 +18,7 @@
                     <i class="iconfont geshop-icon design-folder" style="color: #81BFFF; font-size: 20px;"></i>
                 </template>
             </a-tree>
+			<a-button class="upload-image-btn" @click="uploadImage">上传图片素材</a-button>
         </div>
 
         <!-- 目录内容 -->
@@ -107,10 +108,13 @@ export default {
     },
 	
 	created () {
+		// 默认选中第一个
+		this.selected_folder_keys = ['0-0']
 		this.get_folder_details()
 	},
 
     methods: {
+		uploadImage () {},
         /**
          * 打开素材管理的弹窗
          */
@@ -200,6 +204,9 @@ export default {
         display: flex;
         flex-wrap: wrap;
     }
+	.upload-image-btn{
+		margin-left: 20px;
+	}
 
     // 目录列表
     .tree-list {
