@@ -1,0 +1,10 @@
+div.ant-table-thead > tr > th, .ant-table-tbody > tr > td{
+	padding: 14px;
+}
+.ant-table-thead > tr > th .ant-table-column-title{
+	white-space: nowrap;
+}
+
+div.ant-modal-wrap{
+	overflow: hidden;
+}

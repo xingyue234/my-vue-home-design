@@ -11,7 +11,7 @@ function request(options) {
 	// }
 
 	// Token 校验
-	let Authorization = localStorage.getItem("token") || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiaWQiOiIxNiIsImlhdCI6MTYxNzg0NTA0MSwiZXhwIjoxNjIwNDM3MDQxfQ.Zvd8Os-LiA2aRGzLPbvCZaY1scc53iZY821ju5p-D6s";
+	let Authorization = localStorage.getItem("token") || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlSWRzIjpbIjEiXSwidXNlcklkIjoiMSIsInBhc3N3b3JkVmVyc2lvbiI6ODMsImlhdCI6MTYxODA0MDk5MSwiZXhwIjoxNjE4NjQ1NzkxfQ.gOtUO0wRb9BUg_FJkqqKY0fXy6esBuhIK2xy_SjUxZU";
 
 	const ignore = {
 		token: ["/app/comm/verifyCode", "/app/comm/refreshToken"]

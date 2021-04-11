@@ -32,7 +32,7 @@ const datas = {
         title: '动画时间间隔（毫秒）',
         value: '3000',
         type: 'number',
-        min: 3000,
+        min: 1000,
         max: 10000
     }
 };

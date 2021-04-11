@@ -5,6 +5,8 @@ import Antd from 'ant-design-vue/es'
 import 'ant-design-vue/dist/antd.css'
 Vue.use(Antd);
 
+import './resource/common.css'
+
 import Moment from 'vue-moment'
 Vue.use(Moment);
 

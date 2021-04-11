@@ -3,7 +3,7 @@ const layout = {
     datas: [
         {
             title: '基础配置',
-            groups: ['goods']
+            groups: ['goods', 'showNumber']
         },
     ],
     styles: [

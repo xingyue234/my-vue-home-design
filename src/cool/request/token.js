@@ -1,7 +1,13 @@
-import Store from "@/store";
-
+import store from "@/store/index.js";
 import { request } from "@/service/request";
 import { baseUrl } from "@/config/env";
+
+setTimeout(() => {
+	// token固定
+	store.commit("SET_TOKEN", {
+		token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlSWRzIjpbIjEiXSwidXNlcklkIjoiMSIsInBhc3N3b3JkVmVyc2lvbiI6ODMsImlhdCI6MTYxODA0MDk5MSwiZXhwIjoxNjE4NjQ1NzkxfQ.gOtUO0wRb9BUg_FJkqqKY0fXy6esBuhIK2xy_SjUxZU'
+	});
+}, 1000)
 
 export default {
 	isExpire() {
@@ -22,7 +28,7 @@ export default {
 
 	refresh (force) {
 		const expire = this.isExpire();
-		const refreshToken = localStorage.getItem("refreshToken");
+		const refreshToken = localStorage.getItem("token");
 		
 
 		return new Promise((resolve, reject) => {
@@ -35,7 +41,7 @@ export default {
 						}
 					})
 					.then(res => {
-						Store.commit("SET_TOKEN", res);
+						store.commit("SET_TOKEN", res);
 
 						// let page = last(getCurrentPages());
 						// let {

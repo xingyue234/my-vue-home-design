@@ -1,6 +1,6 @@
 <template>
     <a-modal
-        width="960px"
+        width="1000px"
         :visible="visible.material"
         title="素材库管理"
         class="material-modal"
@@ -18,26 +18,40 @@
                     <i class="iconfont geshop-icon design-folder" style="color: #81BFFF; font-size: 20px;"></i>
                 </template>
             </a-tree>
-			<a-button class="upload-image-btn" @click="uploadImage">上传图片素材</a-button>
+			 <a-upload class="upload-image-btn"
+			    name="file"
+			    :multiple="true"
+			    action="/admin/comm/upload"
+				:data="uploadData"
+			    :headers="headers"
+				:beforeUpload="beforeUpload"
+			    @change="handleChange"
+			  >
+			    <a-button> <a-icon type="upload" />上传图片素材</a-button>
+			  </a-upload>
         </div>
 
         <!-- 目录内容 -->
-        <div :class="{
-                'files-list': true,
-                'is-empty': files_list.length <= 0 && loading_files == false
-            }">
-            <a-spin :spinning="loading_files">
-                <ul>
-                    <li v-for="(item, index) in files_list" :key="index">
-                        <div class="image-wrapper">
-                            <img :src="item.url" :alt="item.name">
-                        </div>
-                        <label>{{ item.name }}</label>
-                        <button @click="handle_chosen_file(item)">立即使用</button>
-                    </li>
-                </ul>
-            </a-spin>
-        </div>
+		<div class="files-list">
+			<div :class="{
+			        'is-empty': files_list.length <= 0 && loading_files == false
+			    }">
+			    <a-spin :spinning="loading_files">
+			        <ul class="file-list-ul">
+			            <li class="file-list-li" v-for="(item, index) in files_list" :key="index">
+			                <div class="image-wrapper">
+			                    <img :src="item.url" :alt="item.name">
+			                </div>
+			                <label>{{ item.name }}</label>
+			                <button @click="handle_chosen_file(item)">立即使用</button>
+			            </li>
+			        </ul>
+					<div class="image-pagination">
+						<a-pagination @change="pageChange" :default-current="1" :total="pageTotal" :pageSize="pageSize" />
+					</div>
+			    </a-spin>
+			</div>
+		</div>
     </a-modal>
 </template>
 
@@ -94,6 +108,12 @@ export default {
 
     data () {
         return {
+			pageTotal: 1000,
+			pageSize: 15,
+			uploadData: {},
+			headers: {
+			    Authorization: localStorage.getItem('token'),
+			 },
             // 展示弹层
             visible: {
                 material: false,
@@ -107,14 +127,43 @@ export default {
         }
     },
 	
-	created () {
+	async created () {
 		// 默认选中第一个
 		this.selected_folder_keys = ['0-0']
 		this.get_folder_details()
 	},
 
     methods: {
-		uploadImage () {},
+		pageChange (page, pageSize) {
+			this.get_folder_details({
+				page: page,
+				size: pageSize
+			})
+		},
+		beforeUpload (file) {
+			// this.$service.ossUpload(file, {}).then((res) => {
+			// 	console.log(res, '上传结果')
+			// })
+			// return false
+		},
+		/**
+		 * 上传图片
+		 */
+		async handleChange (info) {
+		      if (info.file.status !== 'uploading') {
+		        // console.log(info.file, info.fileList, '上传图片信息');
+		      }
+		      if (info.file.status === 'done') {
+				 this.files_list.push({
+					 url: info.file.response.data,
+					 name: info.file.name
+				 })
+
+		        this.$message.success(`${info.file.name} file uploaded successfully`);
+		      } else if (info.file.status === 'error') {
+		        this.$message.error(`${info.file.name} file upload failed.`);
+		      }
+		},
         /**
          * 打开素材管理的弹窗
          */
@@ -144,16 +193,34 @@ export default {
         /**
          * 获取文件夹内容
          */
-        get_folder_details () {
-            this.loading_files = true;
-            get_material_folder_detail({
-                id: this.selected_folder_id
-            }).then(res => {
-                this.loading_files = false;
-                // 过滤 type = 1 的图片素材
-                this.files_list = res.data.list;
-            });
-        },
+        // get_folder_details () {
+        //     this.loading_files = true;
+        //     get_material_folder_detail({
+        //         id: this.selected_folder_id
+        //     }).then(res => {
+        //         this.loading_files = false;
+        //         // 过滤 type = 1 的图片素材
+        //         this.files_list = res.data.list;
+        //     });
+        // },
+		
+		/**
+		 * 获取文件夹内容
+		 */
+		get_folder_details (params) {
+		    this.loading_files = true;
+			this.$service.spaceList({
+				page: 1,
+				size: 15,
+				...params
+			}).then((res) => {
+				this.loading_files = false;
+				this.files_list = res.list
+				this.pageTotal = res.pagination.total
+			}).catch((err) => {
+				this.loading_files = false;
+			})
+		},
 
         // 读取目录内容
         handle_folder_selecte (selectedKeys, e) {
@@ -196,6 +263,9 @@ export default {
 </script>
 
 <style lang="less">
+div.ant-modal{
+	top: 30px;
+}
 
 // 素材管理的弹窗
 .material-modal {
@@ -210,8 +280,8 @@ export default {
 
     // 目录列表
     .tree-list {
-        width: 260px;
-        height: 460px;
+        width: 220px;
+        height: 520px;
         border-right: solid 1px #ddd;
         padding-bottom: 20px;
         overflow-x: hidden;
@@ -258,10 +328,15 @@ export default {
     // 内容
     .files-list {
         width: 700px;
-        height: 460px;
+        height: 520px;
         overflow-y: auto;
         box-sizing: border-box;
         position: relative;
+		
+		.image-pagination{
+			display: flex;
+			justify-content: flex-end;
+		}
 
         // 数据为空
         &.is-empty {
@@ -289,7 +364,7 @@ export default {
             }
         }
 
-        ul {
+        .file-list-ul {
             list-style: none;
             margin: 0px;
             padding: 0px;
@@ -298,7 +373,7 @@ export default {
             display: flex;
             flex-wrap: wrap;
 
-            li {
+            .file-list-li {
                 position: relative;
                 width: 116px;
                 height: 116 + 48px;

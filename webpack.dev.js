@@ -18,6 +18,17 @@ module.exports = merge(common, {
 		hotOnly: true,
 		progress: true,
 		proxy: {
+			'/admin': {
+				target: 'http://shop.creya.cn/',
+				changeOrigin: true
+			},
+			"/oss-upload": {
+				target: "https://zuizan.oss-cn-shanghai.aliyuncs.com",
+				changeOrigin: true,
+				pathRewrite: {
+					"^/oss-upload": ""
+				}
+			},
 			'/proxy/': {
 				target: 'http://localhost/',
 				changeOrigin: true,
@@ -25,10 +36,6 @@ module.exports = merge(common, {
 					'^/proxy/': ''
 				}
 			},
-			'/admin': {
-				target: 'http://shop.creya.cn/',
-				changeOrigin: true
-			}
 		}
 	},
     plugins: [

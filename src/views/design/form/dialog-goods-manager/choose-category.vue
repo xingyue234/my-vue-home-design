@@ -30,48 +30,20 @@ export default {
             // 是否展示
             visible: false,
             loading: false,
-            currentItem: {},
             selectedRowKeys: [],
             list: [
                 {
-                    "goods_id": "7608891",
-                    "goods_sn": "466555503",
-                    "goods_number": "213",
+                    "id": "7",
                     "goods_title": "Marvel Spider-Man Print Short Sleeve Graphic T-shirt - BLUE - L",
                     "goods_img": "https:\/\/gloimg.rglcdn.com\/rosegal\/pdm-product-pic\/Clothing\/2020\/06\/15\/goods-img\/1592164049059038664.jpg",
-                    "market_price": "30.36",
-                    "shop_price": "22.49",
-                    "discount": 26,
                     "create_at": '2019-09-09' 
                 },
-                {
-                    "goods_id": "7608886",
-                    "goods_sn": "468514403",
-                    "goods_number": "175",
-                    "goods_title": "Marvel Spider-Man Allover Print Tank Top - MULTI - L",
-                    "goods_img": "https:\/\/gloimg.rglcdn.com\/rosegal\/pdm-product-pic\/Clothing\/2020\/06\/15\/goods-img\/1592165314707062669.jpg",
-                    "market_price": "25.45",
-                    "shop_price": "18.99",
-                    "discount": 25,
-                    "create_at": '2019-09-09' 
-                },
-                {
-                    "goods_id": "7609041",
-                    "goods_sn": "467447903",
-                    "goods_number": "219",
-                    "goods_title": "Marvel Spider-Man Pattern Short Sleeve T-shirt - MULTI - L",
-                    "goods_img": "https:\/\/gloimg.rglcdn.com\/rosegal\/pdm-product-pic\/Clothing\/2020\/06\/08\/goods-img\/1591898621405637747.jpg",
-                    "market_price": "27.39",
-                    "shop_price": "19.99",
-                    "discount": 27,
-                    "create_at": '2019-09-09' 
-                }
-            ],
+			],
             tableColumns: [
                 {
                     title: 'ID',
-                    key: 'goods_id',
-                    dataIndex: 'goods_id',
+                    key: 'id',
+                    dataIndex: 'id',
                 },
                 {
                     title: 'Title',
@@ -86,7 +58,6 @@ export default {
             ]
         };
     },
-
     computed: {
         rowSelection () {
             return { 
@@ -110,13 +81,15 @@ export default {
          * 打开弹窗
          * @param {Array} list 商品列表
          */
-        show (current_skus = {}) {
+        show (current_value = {}) {
             this.visible = true;
-            this.list.map((x, index) => {
-                if (x.goods_id == current_skus.goods_id) {
-                    this.selectedRowKeys.push(index);
-                }
-            });
+			this.selectedRowKeys = []
+
+			this.selectedRowKeys = this.list.map((item, index) => {
+				if (item.id == current_value.id) {
+					return index
+				}
+			});
         },
 
         /**
@@ -125,7 +98,7 @@ export default {
         handleConfirm () {
             const list = this.selectedRowKeys.map(index => this.list[index]);
             if (list.length) {
-                this.$emit('confirm', list[0]);
+				this.$emit('confirm', list[0]);
                 this.visible = false;
             } else {
                 this.$message.warning('请选择');

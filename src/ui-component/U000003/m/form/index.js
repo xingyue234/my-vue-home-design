@@ -5,7 +5,14 @@ const datas = {
         value: '',
         type: 'goods',
         able: [1]
-    }
+    },
+	showNumber: {
+		title: '显示个数',
+		type: 'bar',
+		value: 4,
+		min: 0,
+		max: 50
+	}
 };
 
 // 样式配置

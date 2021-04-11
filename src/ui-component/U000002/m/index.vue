@@ -35,6 +35,7 @@ export default {
                 loop: true,
                 delay: 3000,
                 observer:true,
+				effect: 'slide',
                 autoHeight: true,
                 pagination: {
                     el: '.swiper-pagination',
@@ -49,11 +50,25 @@ export default {
         Swiper,
         SwiperSlide
     },
+	
+	watch: {
+		'datas.delay' (val) {
+			this.swiperOption.delay = Number(val)
+			this.swiper && this.swiper.updateSwiper()
+		},
+		'datas.effect' (val) {
+			// console.log(this.swiper && this.swiper.updateSwiper, 'this.swiper');
+			// console.log(val, 'effect变化了');
+			this.swiperOption.effect = 'fade'
+			this.swiper && this.swiper.updateSwiper()
+		},
+		
+	},
 
     computed: {
         // 初始化
         swiper () {
-            return this.$refs.mySwiper.swiper;
+            return this.$refs.mySwiper;
         },
 
         // 广告轮播列表

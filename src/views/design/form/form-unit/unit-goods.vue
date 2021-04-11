@@ -33,8 +33,8 @@
             </template>
         </div>
         <!-- 弹窗 -->
-        <goods-source-manager
-            ref="goodsSourceManager"
+        <good-source
+            ref="goodSource"
             :value.sync="current_value"
             @confirm="handle_dialog_confirm" />
 
@@ -51,7 +51,7 @@
 <script>
 
 // 商品数据弹窗
-import goodsSourceManager from '../goods-source-manager/index';
+import goodSource from '../dialog-goods-manager/good-source.vue';
 import chooseGoodsData from '../dialog-goods-manager/choose-category.vue';
 
 // Main code
@@ -59,7 +59,7 @@ export default {
     props: ['value', 'config'],
 
     components: {
-        goodsSourceManager,
+        goodSource,
         chooseGoodsData
     },
 
@@ -106,13 +106,13 @@ export default {
 
     methods: {
          /**
-         * 打开商品数据配置的弹窗 --- 分组
+         * 打开商品分组数据配置的弹窗 --- 分组
          */
         handle_open_good_dialog () {
             this.$refs.chooseGoodsData.show(this.current_value);
         },
         /**
-         * 商品数据配置弹窗 - 确认回调
+         * 商品分组数据配置弹窗 - 确认回调
          * @param {Object} data 商品分组数据
          */
         handle_dialog_good_confirm (data) {
@@ -136,7 +136,7 @@ export default {
          * 打开商品数据配置的弹窗
          */
         handle_open_dialog () {
-           this.$refs.goodsSourceManager.show(this.current_value);
+            this.$refs.goodSource.show(this.current_value);
         },
 
         /**
@@ -145,6 +145,7 @@ export default {
          */
         handle_dialog_confirm (list) {
             this.current_value = list
+			console.log(list, '哈哈哈哈');
             this.$emit('input', list);
         },
 

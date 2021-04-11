@@ -4,9 +4,8 @@ import { message } from 'ant-design-vue';
 // 组件实例
 import Vdc from '@/core/vdc/vdc';
 
-import {
-    design_get_page_info
-} from '../../interface/index.js';
+import { design_get_page_info } from '../../interface/index.js';
+import { service } from "@/cool";
 
 /**
  * 获取组件配置项方法
@@ -105,18 +104,20 @@ const design = {
          */
         page_load ({ state, dispatch }, page_id) {
             state.loading = true;
+			// service.save({page_id}).then((res) => {
+			// })
             // 装修页获取页面数据
             design_get_page_info(page_id).then(res => {
                 // 拼装页面数据
-                const local_components = JSON.parse(localStorage.getItem('layouts') || '[]');
+                // const local_components = JSON.parse(localStorage.getItem('layouts') || '[]');
                 const data = {
                     page_id: res.pageId || '',
-                    lang: res.lang || 'en',
-                    platform: res.platform || 'm',
+                    // lang: res.lang || 'en',
+                    // platform: res.platform || 'm',
                     title: res.pageTitle || '',
                     components: res.components.map(x => new Vdc(x))
                 };
-                
+
                 // 存储页面数据
                 dispatch('page/load', data, { root: true });  
 
@@ -144,38 +145,36 @@ const design = {
         page_save ({ state, rootState }) {
             // 开启 loading 状态
             state.loading = true;
-            
-            setTimeout(() => {
-                state.loading = false;
-
-                // 删除部分不需要传输到后端的字段
-                // let cmpts_arr = JSON.parse(JSON.stringify(rootState.page.components));
-                const cmpts_arr = rootState.page.components.map(vdc => {
-                    vdc.inject_remote_data();
-                    const copy_vdc = JSON.parse(JSON.stringify(vdc));
-                    // 删除字段
-                    delete copy_vdc.is_loaded_config;
-                    delete copy_vdc.lastmodify;
-                    delete copy_vdc.config;
-                    delete copy_vdc.template_list;
-                    return copy_vdc;
-                });
-
-                // localStorage.setItem('layouts', JSON.stringify(cmpts_arr));
-
-                // 保存的参数
-                const saveParams = {
-                    "pageTitle": rootState.page.info.title,
-                    "lang": rootState.page.info.lang,
-                    "pageId": rootState.page.info.page_id,
-                    "platform": rootState.page.info.platform,
-                    "components": cmpts_arr
-                };
-                console.log(JSON.stringify(saveParams), '参数');
-
-                
-                message.success('保存成功');
-            }, 200);
+           // 删除部分不需要传输到后端的字段
+           // let cmpts_arr = JSON.parse(JSON.stringify(rootState.page.components));
+           const cmpts_arr = rootState.page.components.map(vdc => {
+               vdc.inject_remote_data();
+               const copy_vdc = JSON.parse(JSON.stringify(vdc));
+               // 删除字段
+               delete copy_vdc.is_loaded_config;
+               delete copy_vdc.lastmodify;
+               delete copy_vdc.config;
+               delete copy_vdc.template_list;
+               return copy_vdc;
+           });
+           
+           // localStorage.setItem('layouts', JSON.stringify(cmpts_arr));
+           
+           // 保存的参数
+           const saveParams = {
+           	   // "pageType": "",
+               "pageName": rootState.page.info.title,
+               // "lang": rootState.page.info.lang,
+               "pageId": rootState.page.info.page_id || '',
+               // "platform": rootState.page.info.platform,
+               "data": JSON.stringify(cmpts_arr)
+           };
+		   service.save({...saveParams}).then((res) => {
+		   	   console.log(res, '保存 结果')
+			   message.success('保存成功');
+			   state.loading = false;
+		   })
+           console.log(saveParams, '参数');
         },
 
         /**

@@ -1,4 +1,3 @@
-import { Storage } from "@/cool";
 
 export default {
 	state: {

@@ -119,7 +119,7 @@ export default {
         document.documentElement.style.fontSize = '37.5px';
 		// console.log(this.$service.list(), 'this.$service.list()');
 		this.$service.list().then((res) => {
-			console.log(res, 'res')
+			console.log(res, 'res哈哈哈')
 		})
     }
 }

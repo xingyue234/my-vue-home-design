@@ -30,7 +30,7 @@
                             <a-menu slot="overlay">
                                 <a-menu-item  
                                     v-for="item2 in select_options"
-                                    @click="selectHandler(item2, index)"
+                                    @click="selectHandler(item2, index, item)"
                                     :key="item2.code">
                                     <a href="javascript:;">{{ item2.name }}</a>
                                 </a-menu-item>
@@ -66,6 +66,18 @@
             ref="goodsSourceManager"
             :value.sync="current_value"
             @confirm="handle_dialog_good_confirm" />
+			
+		<!-- 商品分组管理器 -->
+		<category-source-manager
+			ref="cateSourceManager"
+			:value.sync="current_value"
+			@confirm="handle_dialog_good_confirm" />
+
+		<!-- 输入框弹框-->
+		<route-source-manager
+		    ref="routeSourceManager"
+		    :value.sync="current_value"
+		    @confirm="handle_dialog_good_confirm" />
     </div>
 </template>
 
@@ -75,6 +87,8 @@
 import imagesSort from "../images-sort/index.vue";
 import imagesManager from "../images-manager/index.vue";
 import goodsSourceManager from "../dialog-goods-manager/choose-good.vue";
+import categorySourceManager from "../dialog-goods-manager/choose-category.vue";
+import routeSourceManager from "../dialog-goods-manager/input-route.vue";
 
 // Main code
 export default {
@@ -97,7 +111,9 @@ export default {
     components: {
         imagesSort,
         imagesManager,
-        goodsSourceManager 
+        goodsSourceManager,
+		routeSourceManager,
+		categorySourceManager
     },
     data () {
         return {
@@ -115,10 +131,14 @@ export default {
                     name: '商品分组',
                     code: 'good-category'
                 },
-                {
-                    name: '小程序微页面',
-                    code: 'design-page'
-                }
+                // {
+                //     name: '小程序微页面',
+                //     code: 'design-page'
+                // },
+				{
+				    name: '页面路由',
+				    code: 'route'
+				}
             ]
         }
     },
@@ -131,26 +151,42 @@ export default {
 
     methods: {
         getValue (item) {
-            if (item.link_data && item.link_data.goods_title) {
-                return item.type.name + ' | ' + item.link_data.goods_title
-            } else {
-                return '设置链接到的页面地址'
-            }
-        },
-        /**
-         * 打开商品数据配置的弹窗
-        */
-        handle_open_dialog (item) {
-            this.$refs.goodsSourceManager.show(item,'7608891');
+			if (item.link_data) {
+				switch (item.type.code) {
+					case 'good-detail':
+						return item.type.name + ' | ' + item.link_data.title;
+						break;
+					case 'good-category':
+						return item.type.name + ' | ' + item.link_data.goods_title;
+						break;
+					case 'route':
+						return item.type.name + ' | ' + item.link_data;
+						break;
+				};
+			} else {
+				return '设置链接到的页面地址'
+			}
         },
 
-        selectHandler(item, index) {
-            this.handle_open_dialog(item)
-            this.current_image_index = index
-            // if (item.key === 'good-detail') {
-            // } else if (item.key === 'good-category') {
-            // } else if (item.key === 'design-page') {
-            // }
+        selectHandler(item, index, pItem) {
+			this.current_image_index = index
+			this.current_value[index].type = item
+
+			if (item.code !== this.oldCode) {
+				pItem.link_data = ''
+			}
+			this.oldCode = item.code
+			if (item.code === 'route') {
+				this.$refs.routeSourceManager.show(pItem.link_data || '');
+			} else if (item.code === 'good-detail') {
+				this.$refs.goodsSourceManager.show(pItem.link_data || {}, 'radio');
+				// if (item.key === 'good-detail') {
+				// } else if (item.key === 'good-category') {
+				// } else if (item.key === 'design-page') {
+				// }
+			} else if (item.code === 'good-category') {
+				this.$refs.cateSourceManager.show(pItem.link_data || {});
+			}
         },
 
          /**
@@ -158,10 +194,10 @@ export default {
          * @param {Array} list 商品数据列表
          */
         handle_dialog_good_confirm (info) {
-            this.value[this.current_image_index].type = info.type
-            this.value[this.current_image_index].link_data = info.link_data
-            this.$emit('input', this.value);
+            this.current_value[this.current_image_index].link_data = info
+            this.$emit('input', this.current_value);
         },
+		
         /**
          * 打开商品数据配置的弹窗
          */
@@ -216,8 +252,8 @@ export default {
         handle_add_image (url) {
             this.current_value.push({
                 image: url,
-                type: {},
-                link_data: {}
+                type: '',
+                link_data: ''
             });
         }
     }
@@ -249,6 +285,10 @@ export default {
         max-width: 100%;
         max-height: 100%;
     }
+	li .image-container{
+		position: relative;
+		width: 200px;
+	}
     li .image-container:hover {
         .controller-layer {
             display: flex;

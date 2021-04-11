@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="config-detail">
         <!-- 循环样式配置项 -->
         <template v-for="(group, index) in layout">
             <unit-panel 
@@ -187,3 +187,11 @@ export default {
     }
 }
 </script>
+
+<style lang="less">
+	.config-detail{
+		span.ant-radio + *{
+			padding-left: 0;
+		}
+	}
+</style>

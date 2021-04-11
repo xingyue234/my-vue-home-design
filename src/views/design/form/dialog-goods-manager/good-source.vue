@@ -14,7 +14,7 @@
                 :columns="tableColumns"
                 :data-source="goods_list"
                 bordered>
-                <a slot="goods_img" slot-scope="text">
+                <a slot="pic" slot-scope="text">
                     <img :src="text" height="50px">
                 </a>
                 <span slot="action" slot-scope="record">
@@ -28,7 +28,7 @@
 
         <goods-manager
             ref="goodsManager"
-            @onComfirm="update_goods_list" />
+            @confirm="update_goods_list" />
 
     </design-dialog>
 </template>
@@ -36,10 +36,10 @@
 <script>
 
 // 商品数据
-import goodsManager from '../dialog-goods-manager/index.vue';
+import goodsManager from './choose-good.vue';
 
 export default {
-    name: 'goods-source-manager',
+	name: 'goodSource',
 
     data () {
         return {
@@ -48,32 +48,27 @@ export default {
             loading: false,
             goods_list: [],
             tableColumns: [
-                {
-                    dataIndex: 'goods_img',
-                    key: 'goods_img',
-                    title: 'Image',
-                    scopedSlots: { customRender: 'goods_img' },
-                },
-                {
-                    title: 'ID',
-                    key: 'goods_id',
-                    dataIndex: 'goods_id',
-                },
-                {
-                    title: 'Title',
-                    key: 'goods_title',
-                    dataIndex: 'goods_title',
-                },
-                {
-                    title: 'Price',
-                    key: 'shop_price',
-                    dataIndex: 'shop_price',
-                },
-                {
-                    title: 'Sku',
-                    key: 'goods_sn',
-                    dataIndex: 'goods_sn',
-                },
+				{
+				    dataIndex: 'pic',
+				    key: 'pic',
+				    title: 'Image',
+				    scopedSlots: { customRender: 'pic' },
+				},
+				{
+				    title: 'ID',
+				    key: 'id',
+				    dataIndex: 'id',
+				},
+				{
+				    title: 'Title',
+				    key: 'title',
+				    dataIndex: 'title',
+				},
+				{
+				    title: '保留价',
+				    key: 'reservePrice',
+				    dataIndex: 'reservePrice',
+				},
                 {
                     title: 'Action',
                     key: 'action',
@@ -102,7 +97,7 @@ export default {
          * 删除商品
          */
         handleRemoveItem (row) {
-            this.goods_list = this.goods_list.filter(x => x.goods_sn != row.goods_sn);
+            this.goods_list = this.goods_list.filter(x => x.id != row.id);
         },
 
         /**
@@ -124,14 +119,14 @@ export default {
          * 打开数据源
          */
         openSource () {
-            const skus = this.goods_list.map(x => x.goods_sn);
-            this.$refs.goodsManager.show(skus);
+            this.$refs.goodsManager.show(this.goods_list, 'checkbox');
         },
 
         /**
          * 更新商品列表
          */
         update_goods_list (list) {
+			console.log(list, 'list');
             this.goods_list = [...list];
         }
     }
@@ -141,7 +136,6 @@ export default {
 <style lang="less" scoped>
 // 容器
 .container-body {
-
     .goods-list {
         list-style: none;
         padding: 0;

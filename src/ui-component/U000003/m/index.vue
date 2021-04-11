@@ -6,7 +6,7 @@
         <div v-html="css"></div>
         <!-- 列表 -->
         <ul>
-            <li v-for="(item, index) in list" :key="`${index}-${item.goods_sn}`">
+            <li v-for="(item, index) in list" :key="`${index}-${item.goods_sn}`" v-show="showNumber > index">
                 <!--折扣标-->
                 <unit-discount
                     :value="item.discount"
@@ -16,13 +16,10 @@
                 <div class="item-image">
                     <div class="image-goods">
                         <unit-goods-image
-                            :src="item.goods_img"
-                            :sku="item.goods_sn"
+                            :src="item.pic"
+                            :sku="item.id"
                             :index="index" />
                     </div>
-                    
-                    <!-- <a :href="item.goods_number > 0 ? item.url_title: 'javascript:void(0);'">
-                    </a> -->
 
                     <!--sold out-->
                     <div class="item-soldOut" v-if="item.goods_number <= 0">
@@ -33,7 +30,7 @@
                 <div class="item-info">
                     <!--sku标题-->
                     <div class="item-title">
-                        <a :href="item.goods_number > 0 ? item.url_title: 'javascript:void(0);'">{{ item.goods_title }}</a>
+                        <a :href="item.goods_number > 0 ? item.url_title: 'javascript:void(0);'">{{ item.title }}</a>
                     </div>
 
                     <div class="item-shop-market">
@@ -43,7 +40,7 @@
                             <span class="shop-title-block"></span>
                             <div class="shop-price">
                                 <unit-shop-price
-                                    :value="item.shop_price"
+                                    :value="item.reservePrice"
                                     :config="styles">
                                 </unit-shop-price>
                             </div>
@@ -136,6 +133,9 @@ export default {
         env () {
             return this.$store.state.page.env;
         },
+		showNumber () {
+			return Number(this.datas.showNumber)
+		},
         list () {
             let goods = this.datas.goods
             if (goods instanceof Array) {
