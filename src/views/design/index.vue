@@ -10,16 +10,16 @@
             <layout-top />
 
             <!-- 左侧组件列表 -->
-            <layout-component-list />
+            <layout-component-list v-if="env == 1" />
 
             <!-- 中间预览区域 -->
             <layout-preview />
 
             <!-- 组件表单 -->
-            <layout-form />
+            <layout-form  v-if="env == 1" />
 
             <!-- 组件顺序 -->
-            <layout-sortable />
+            <layout-sortable  v-if="env == 1" />
         </template>
     </div>
 </template>
@@ -46,6 +46,10 @@ export default {
     },
 
     computed: {
+		// 当前环境, 1=装修页, 2=预览, 3=发布
+		env () {
+		    return this.$store.state.page.env;
+		},
         first_loaded () {
             return this.$store.state.design.first_loaded;
         },
@@ -109,6 +113,7 @@ export default {
     },
 
     created () {
+		console.log(this.env, 'env哈哈哈');
         
         /**
          * 页面初始化

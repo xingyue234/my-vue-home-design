@@ -24,17 +24,17 @@ const layout = {
                 'item_radius'
             ]
         },
-        {
-            title: '折扣标',
-            icon: false,
-            groups: [
-                'discount_show',
-                'discount_type',
-                'discount_bg_color',
-                'discount_font_color',
-                'discount_bg_image'
-            ]
-        },
+        // {
+        //     title: '折扣标',
+        //     icon: false,
+        //     groups: [
+        //         'discount_show',
+        //         'discount_type',
+        //         'discount_bg_color',
+        //         'discount_font_color',
+        //         'discount_bg_image'
+        //     ]
+        // },
         {
             title: '销售价',
             icon: false,

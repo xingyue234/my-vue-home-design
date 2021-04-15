@@ -4,7 +4,13 @@ div.ant-table-thead > tr > th, .ant-table-tbody > tr > td{
 .ant-table-thead > tr > th .ant-table-column-title{
 	white-space: nowrap;
 }
-
+div.ant-modal-body{
+	padding: 12px;
+	padding-bottom: 0;
+}
+div.ant-table-footer{
+	padding: 5px 16px;
+}
 div.ant-modal-wrap{
 	overflow: hidden;
 }

@@ -104,37 +104,62 @@ const design = {
          */
         page_load ({ state, dispatch }, page_id) {
             state.loading = true;
-			// service.save({page_id}).then((res) => {
-			// })
+			this.$service.info({
+				pageId: page_id
+			}).then((res) => {
+				const data = {
+				    page_id: res.pageId || page_id,
+				    title: res.pageName || '',
+					bgColor: res.bgColor || '',
+				    components: res.data.map(x => new Vdc(x))
+				};
+				
+				// 存储页面数据
+				dispatch('page/load', data, { root: true });  
+				
+				// 11-10 通过 API 获取当前页面组件的商品数据 - Cullen
+				// dispatch('page/load_remote_goods_data', {
+				//     is_first: 1
+				// }, { root: true });
+				
+				// 更新状态
+				state.loading = false;
+				state.first_loaded = true;
+			}).catch((err) => {
+				err.message && message.error(err.message);
+				// setTimeout(() => {
+				//     window.location.href = '/';
+				// }, 3000);
+			})
             // 装修页获取页面数据
-            design_get_page_info(page_id).then(res => {
-                // 拼装页面数据
-                // const local_components = JSON.parse(localStorage.getItem('layouts') || '[]');
-                const data = {
-                    page_id: res.pageId || '',
-                    // lang: res.lang || 'en',
-                    // platform: res.platform || 'm',
-                    title: res.pageTitle || '',
-                    components: res.components.map(x => new Vdc(x))
-                };
+            // design_get_page_info(page_id).then(res => {
+            //     // 拼装页面数据
+            //     // const local_components = JSON.parse(localStorage.getItem('layouts') || '[]');
+            //     const data = {
+            //         page_id: res.pageId || '',
+            //         // lang: res.lang || 'en',
+            //         // platform: res.platform || 'm',
+            //         title: res.pageTitle || '',
+            //         components: res.components.map(x => new Vdc(x))
+            //     };
 
-                // 存储页面数据
-                dispatch('page/load', data, { root: true });  
+            //     // 存储页面数据
+            //     dispatch('page/load', data, { root: true });  
 
-                // 11-10 通过 API 获取当前页面组件的商品数据 - Cullen
-                dispatch('page/load_remote_goods_data', {
-                    is_first: 1
-                }, { root: true });
+            //     // 11-10 通过 API 获取当前页面组件的商品数据 - Cullen
+            //     dispatch('page/load_remote_goods_data', {
+            //         is_first: 1
+            //     }, { root: true });
 
-                // 更新状态
-                state.loading = false;
-                state.first_loaded = true;
-            }, (err) => {
-                err.message && message.error(err.message);
-                setTimeout(() => {
-                    window.location.href = '/';
-                }, 3000);
-            });
+            //     // 更新状态
+            //     state.loading = false;
+            //     state.first_loaded = true;
+            // }, (err) => {
+            //     err.message && message.error(err.message);
+            //     setTimeout(() => {
+            //         window.location.href = '/';
+            //     }, 3000);
+            // });
         },
 
         /**
@@ -158,12 +183,14 @@ const design = {
                return copy_vdc;
            });
            
-           // localStorage.setItem('layouts', JSON.stringify(cmpts_arr));
+		   console.log(cmpts_arr, '组件数据');
            
            // 保存的参数
+		   console.log(rootState.page, 'rootState.page');
            const saveParams = {
-           	   // "pageType": "",
+           	   "pageType": new Date().getTime(),
                "pageName": rootState.page.info.title,
+			   "bgColor": rootState.page.info.bgColor,
                // "lang": rootState.page.info.lang,
                "pageId": rootState.page.info.page_id || '',
                // "platform": rootState.page.info.platform,
@@ -172,6 +199,9 @@ const design = {
 		   service.save({...saveParams}).then((res) => {
 		   	   console.log(res, '保存 结果')
 			   message.success('保存成功');
+			   state.loading = false;
+		   }).catch((err) => {
+			   err.message && message.error(err.message);
 			   state.loading = false;
 		   })
            console.log(saveParams, '参数');

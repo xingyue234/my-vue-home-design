@@ -75,7 +75,7 @@ export default {
             main_page_pagination: {
                 current: 1,
                 pageSize: 10,
-                total: 1
+                total: 0
             },
         }
     },
@@ -131,9 +131,11 @@ export default {
          * 获取列表数据
          * @param {Array} list 页面列表
          */
-        handle_get_main_page (list) {
-            this.main_page_list = [...list];
-            this.main_page_pagination.total = parseInt(list.length);
+        handle_get_main_page (res) {
+            this.main_page_list = [...res.list];
+            this.main_page_pagination.total = parseInt(res.pagination.total);
+            this.main_page_pagination.current = parseInt(res.pagination.page);
+            this.main_page_pagination.pageSize = parseInt(res.pagination.size);
             this.handle_loading(false);
         },
         
@@ -156,12 +158,27 @@ export default {
          * 删除页面
          * @param {string} group_id 渠道组合ID
          */
-        async handle_delete (group_id) {
-            const res = await ZF_deleteIndex({group_id});
-            if (res.code == 0) {
-                this.handle_search();
-                this.$message.success(res.message);
-            }
+        handle_delete (params) {
+			this.$confirm({
+			    title: '提示',
+			    content: '确定删除首页列表信息吗？删除后，不可恢复，请谨慎操作！',
+			    okText: '删除',
+			    okType: 'danger',
+			    cancelText: '取消',
+			    onOk: () => {
+					this.$service.delete(params).then((res) => {
+						this.$message.success('页面删除成功');
+						this.handle_search();
+					}).catch((err) => {
+						console.log(err, '删除失败');
+						// this.$message.error(err.message);
+					})
+			    }
+			});
+            // if (res.code == 0) {
+            //     this.handle_search();
+            //     this.$message.success(res.message);
+            // }
         }
     }
 }
@@ -194,19 +211,18 @@ export default {
         list-style: none;
         padding: 0px;
         margin: 0px;
-        padding-left: 40px;
         padding-top: 40px;
         display: flex;
         flex-wrap: wrap;
         align-items: stretch;
+		margin-left: -18px;
 
         li {
-            width: 290px;
-            height: 272px;
-            margin-right: 40px;
-            margin-bottom: 36px;
-            background-color: #fff;
-            border-radius: 10px;
+			width: 267px;
+			height: 272px;
+			background-color: #fff;
+			border-radius: 10px;
+			margin: 0 18px 30px;
         }
 
         li:hover {

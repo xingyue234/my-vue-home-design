@@ -1,7 +1,7 @@
 <template>
     <div class="design-layout-top">
         <a-row type="flex" justify="space-between" align="middle" class="header">
-            <a-col :span="7" class="left">
+            <a-col :span="5" class="left">
 
                 <!--logo-->
                 <div class="layout-logo">
@@ -33,7 +33,7 @@
                 </div>
 
                 <!--语言-->
-                <div class="language">
+                <!-- <div class="language">
                     <a-select
                         class="select-channel"
                         :value="current_lang"
@@ -57,10 +57,10 @@
                         </a-select-option>
 
                     </a-select>
-                </div>
+                </div> -->
 
                 <!--端口-->
-                <div class="client">
+                <!-- <div class="client">
                     <a-select
                         class="select-channel"
                         style="width: 70px;"
@@ -83,18 +83,24 @@
                         </a-select-option>
 
                     </a-select>
-                </div>
+                </div> -->
             </a-col>
 
             <!-- 页面标题 -->
-            <a-col :span="7" class="middle">
+            <a-col :span="5" class="middle">
 				<label>页面标题:</label>
 				<a-input
+				    size="large"
 				    :value="title"
 					@input="titleInput"
 				    :max-length="200"
 				    placeholder="请输入页面标题">
 				</a-input>
+			</a-col>
+			
+			<!-- 页面背景色-->
+			<a-col :span="8" class="middle">
+				<color-picker v-model="bgColor" :config="{title: '页面背景色'}"></color-picker>
 			</a-col>
 
             <!-- 右侧功能区域 -->
@@ -107,11 +113,12 @@
 </template>
 
 <script>
-
+import { colorPicker } from '@/views/design/form/form-unit/index.js';
 export default {
     name: 'design-top',
     data () {
         return {
+			bgColor: '#ffffff',
             title: '', // 活动标题
 
             current_pipeline: 'home',  // 当前选择的渠道
@@ -142,6 +149,14 @@ export default {
             },
         }
     },
+	components: {
+		colorPicker
+	},
+	watch: {
+		bgColor (val) {
+			this.$store.state.page.info.bgColor = val
+		}
+	},
     
     methods: {
 		titleInput (e) {
@@ -284,7 +299,7 @@ export default {
     }
 </style>
 
-<style lang="less" scoped>
+<style lang="less">
 .design-layout-top {
     position: fixed;
     left: 0px;
@@ -305,8 +320,6 @@ export default {
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
-        min-width: 450px;
-
         .layout-logo {
             width: 52px;
             border-right: 1px solid #E8EAEC;
@@ -336,7 +349,7 @@ export default {
 				white-space: nowrap;
 			}
             .select-channel {
-                width: 122px;
+                width: 100px;
             }
         }
 
@@ -368,6 +381,14 @@ export default {
 		.ant-input{
 			min-width: 200px;
 		}
+		.form-item{
+			display: flex;
+			align-items: center;
+			.ant-input-group-addon{
+				border: none;
+				background: #ffffff;
+			}
+		}
     }
 
     .right {
@@ -376,7 +397,6 @@ export default {
         justify-content: flex-end;
         line-height: 50px;
         align-items: center;
-        min-width: 470px;
 
         .save,
         .release {

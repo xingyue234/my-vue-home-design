@@ -12,6 +12,7 @@
         <div class="container-body">
             <a-table
                 :columns="tableColumns"
+				:scroll="{ y: 400, x: 800 }"
                 :data-source="goods_list"
                 bordered>
                 <a slot="pic" slot-scope="text">

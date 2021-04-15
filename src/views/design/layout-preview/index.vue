@@ -5,7 +5,9 @@
         @click.self="handle_release_selected">
 
         <!-- 主要布局，中间，最小宽度 375x667 -->
-        <div class="main-layout is-app" :class="{ 'is-empty': layouts.length <= 0}">
+        <div class="main-layout is-app" 
+		:style="{'background-color': $store.state.page.info.bgColor || ''}"
+		:class="{ 'is-empty': layouts.length <= 0}">
             
             <!-- 拖拽区域 -->
             <nexted

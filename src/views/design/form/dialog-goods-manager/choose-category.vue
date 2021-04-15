@@ -14,6 +14,9 @@
                 :columns="tableColumns"
                 :data-source="list"
                 :rowSelection="rowSelection"
+				:scroll="{ y: 400, x: 800 }"
+				@change="handleTableChange"
+				:pagination="pagination"
                 bordered>
             </a-table>
         </div>
@@ -23,7 +26,7 @@
 <script>
 
 export default {
-    name: 'goods-source-manager',
+    name: 'category-source-manager',
 
     data () {
         return {
@@ -31,14 +34,11 @@ export default {
             visible: false,
             loading: false,
             selectedRowKeys: [],
-            list: [
-                {
-                    "id": "7",
-                    "goods_title": "Marvel Spider-Man Print Short Sleeve Graphic T-shirt - BLUE - L",
-                    "goods_img": "https:\/\/gloimg.rglcdn.com\/rosegal\/pdm-product-pic\/Clothing\/2020\/06\/15\/goods-img\/1592164049059038664.jpg",
-                    "create_at": '2019-09-09' 
-                },
-			],
+			pagination: {
+				pageSize: 1000,
+				current: 1
+			},
+            list: [],
             tableColumns: [
                 {
                     title: 'ID',
@@ -47,13 +47,13 @@ export default {
                 },
                 {
                     title: 'Title',
-                    key: 'goods_title',
-                    dataIndex: 'goods_title',
+                    key: 'name',
+                    dataIndex: 'name',
                 },
                 {
                     title: '创建时间',
-                    key: 'create_at',
-                    dataIndex: 'create_at',
+                    key: 'createTime',
+                    dataIndex: 'createTime',
                 }
             ]
         };
@@ -68,8 +68,55 @@ export default {
 
         }
     },
-
+	created () {
+		this.fetch({
+			page: 1,
+			size: 20
+		})
+	},
     methods: {
+		handleTableChange(pagination, filters) {
+		      console.log(pagination, filters, 'pagination and filters');
+		      const pager = { ...this.pagination };
+		      pager.current = pagination.current;
+		      this.pagination = pager;
+		      this.fetch({
+		        size: pagination.pageSize,
+		        page: pagination.current,
+				title: this.searchValue,
+		        ...filters,
+		      });
+		},
+		fetch (params = {}) {
+			// let data = {
+			// 	size: 20,
+			// 	page: 1
+			// }
+			this.loading = true;
+			this.$service.searchCategory({
+				size: 20,
+				...params,
+			}).then((res) => {
+				if (res) {
+					this.list = res
+					// const pagination = { ...this.pagination };
+					// pagination.total = res.pagination.total;
+					this.loading = false;
+					// this.pagination = pagination;
+				}
+			}).catch((err) => {
+				this.loading = false;
+			})
+		},
+		onSearch (value) {
+			this.searchValue = value
+			this.pagination.current = 1
+			this.fetch({
+				title: value,
+				page: 1,
+				size: 20
+			})
+		},
         /**
          * 选择行
          */

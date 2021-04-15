@@ -5,7 +5,7 @@
             <label>装修</label>
         </button>
         
-        <button>
+        <button @click="preview_design">
             <a-icon theme="filled" type="eye" />
             <label>预览</label>
         </button>
@@ -29,10 +29,20 @@ export default {
          * 打开装修页
          */
         handle_design () {
+			this.$store.commit('page/update_env', 1)
             this.$router.push({
-                path: `/design?id=${this.info.pageId}`,
+                path: `/design?id=${this.info.id}`,
             });
-        }
+        },
+		/**
+		 * 打开预览页
+		 */
+		preview_design () {
+			this.$store.commit('page/update_env', 2)
+			this.$router.push({
+			    path: `/design?id=${this.info.id}`,
+			});
+		}
     }
     
 }

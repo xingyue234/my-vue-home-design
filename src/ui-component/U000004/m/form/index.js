@@ -18,12 +18,60 @@ const datas = {
 };
 
 // 样式配置
-const styles = {};
+const styles = {
+	image_padding: {
+		title: '图片内间距',
+		type: 'number',
+		value: '10',
+		col: 2
+	},
+	margin_top: {
+	    title: '组件外边距-top',
+	    type: 'number',
+	    value: '0',
+	    col: 2
+	},
+	margin_bottom: {
+	    title: '组件外边距-bottom',
+	    type: 'number',
+	    value: '0',
+	    col: 2,
+	},
+	padding_top: {
+	    title: '组件内边距-top',
+	    type: 'number',
+	    value: '0',
+	    col: 2
+	},
+	padding_bottom: {
+	    title: '组件内边距-bottom',
+	    type: 'number',
+	    value: '0',
+	    col: 2,
+	},
+	bg_radius: {
+	    title: '背景圆角',
+	    type: 'bar',
+	    value: 12,
+	    min: 0,
+	    max: 100
+	},
+	bg_color_inner: {
+	    title: '橱窗背景色',
+	    type: 'color',
+	    value: '#ffffff',
+	},
+	bg_image_inner: {
+	    title: '橱窗背景图片',
+	    type: 'image',
+	    value: ''
+	},
+};
 
-export const config = commonConfig.merge({
+export const config = {
     datas,
     styles,
     layout: [
         template1
     ]
-});
+}

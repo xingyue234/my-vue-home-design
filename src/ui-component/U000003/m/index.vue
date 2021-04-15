@@ -8,9 +8,9 @@
         <ul>
             <li v-for="(item, index) in list" :key="`${index}-${item.goods_sn}`" v-show="showNumber > index">
                 <!--折扣标-->
-                <unit-discount
+                <!-- <unit-discount
                     :value="item.discount"
-                    :config="styles" />
+                    :config="styles" /> -->
 
                 <!--商品图片-->
                 <div class="item-image">
@@ -99,8 +99,8 @@ import defaultGoods from '@/resource/images/default-goods.png';
 // 默认的商品数据
 const default_goods_item = {
     goods_sn: "269004202",
-    goods_title: "Asymmetric Striped Slit Shirt Dress - Dark Gree",
-    goods_img: defaultGoods,
+    title: "Asymmetric Striped Slit Shirt Dress - Dark Gree",
+    pic: defaultGoods,
     tsk_price: 9.99, // 秒杀价格
     shop_price: 9.99, // 销售价
     market_price: 19.99, // 市场价
@@ -231,7 +231,7 @@ export default {
                 word-break: keep-all;
                 word-wrap: break-word;
 
-                padding-top: 8/37.5rem;
+                padding-top: 4/37.5rem;
                 margin-bottom: 4/37.5rem;
                 color: #333333;
                 a {

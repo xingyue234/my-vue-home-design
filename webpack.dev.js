@@ -22,6 +22,10 @@ module.exports = merge(common, {
 				target: 'http://shop.creya.cn/',
 				changeOrigin: true
 			},
+			'/app': {
+				target: 'http://shop.creya.cn/',
+				changeOrigin: true
+			},
 			"/oss-upload": {
 				target: "https://zuizan.oss-cn-shanghai.aliyuncs.com",
 				changeOrigin: true,

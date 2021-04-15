@@ -8,6 +8,7 @@ const page = {
         info: {
             page_id: 0,         // 页面ID
             title: '',          // 页面标题
+			bgColor: '',        // 页面背景色
             lang: '',           // 当前页面选中的语种，默认英语,
             platform: '',       // 设备终端，[pc/m],
         },
@@ -22,6 +23,9 @@ const page = {
     },
 
     mutations: {
+		update_env (state, data) {
+			state.env = data
+		},
         /**
          * 更新页面布局信息
          * @param {Object} state
@@ -44,16 +48,16 @@ const page = {
          */
         load ({ state }, data) {
             const {
-                env = 1,
                 page_id,
                 title,
                 lang,
                 platform,
+				bgColor,
                 components,
             } = data;
-            state.env = env;
             state.info.page_id = page_id;
             state.info.title = title;
+            state.info.bgColor = bgColor;
             state.info.lang = lang;
             state.info.platform = platform;
             state.components = components;

@@ -35,7 +35,7 @@ export default {
                 loop: true,
                 delay: 3000,
                 observer:true,
-				effect: 'slide',
+				effect: 'fade',
                 autoHeight: true,
                 pagination: {
                     el: '.swiper-pagination',
@@ -57,12 +57,10 @@ export default {
 			this.swiper && this.swiper.updateSwiper()
 		},
 		'datas.effect' (val) {
-			// console.log(this.swiper && this.swiper.updateSwiper, 'this.swiper');
-			// console.log(val, 'effect变化了');
-			this.swiperOption.effect = 'fade'
+			this.swiperOption.effect = val
 			this.swiper && this.swiper.updateSwiper()
-		},
-		
+		}
+
 	},
 
     computed: {
@@ -135,6 +133,7 @@ export default {
         text-align: center;
         width: 375/37.5rem;
         overflow: hidden;
+		height: 150 / 37.5rem;
         img {
             width: 100%;
         }      

@@ -1,5 +1,6 @@
 import { Token } from "@/cool";
 import axios from 'axios'
+import { message as iMessage } from 'ant-design-vue';
 function request(options) {
 	// const { isLoading } = options || {};
 
@@ -32,7 +33,7 @@ function request(options) {
 			}
 		}).then((res) => {
 			const { code, data, message } = res.data;
-						
+
 			if (res.statusCode == 401) {
 				if (!Authorization) {
 					window.location.href = window.location.origin + '/login'
@@ -40,12 +41,13 @@ function request(options) {
 					Token.refresh(true);
 				}
 			}
-						
+
 			switch (code) {
 				case 1000:
 					resolve(data);
 					break;
 				default:
+				    iMessage.error(message)
 					reject({ message, code });
 			}
 		}).catch((err) => {

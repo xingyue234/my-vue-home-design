@@ -72,11 +72,39 @@ export default {
                 return false;
             }
 
-            this.$emit('beforeResponse', true);
-            if (getPageList.code == 0) {
-                this.$emit('response', getPageList.data);
-                this.$emit('beforeResponse', false);
-            }
+            this.$emit('beforeResponse', true);  // loading 状态
+			
+			// this.$emit('response', {list: getPageList.data, pagination: {
+			// 	page: 1,
+			// 	size: 1,
+			// 	total: 10
+			// }});
+			// this.$emit('beforeResponse', false);
+			this.$service.list({
+				page: this.pageNo,
+				size: this.pageSize,
+				pageName: this.search_value
+			}).then((res) => {
+				if (res) {
+					// 配置banner
+					res.list.map((page, i) => {
+						let comp = page.data && JSON.parse(page.data)
+						if (comp.length) {
+							let U000002 = comp.find(component => component.component_key === 'U000002')
+							U000002 && U000002.remote_data && (page.banner = U000002.remote_data.list[0].image)
+						}
+						console.log(page, 'page');
+					})
+					// 配置banner
+		
+					this.$emit('response', res);
+				}
+				this.$emit('beforeResponse', false); // loading 状态
+			}).catch((err) => {
+				this.$message.error(err.message)
+				this.$emit('beforeResponse', false); // loading 状态
+			})
+			
         }
     },
 

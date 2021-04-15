@@ -60,7 +60,7 @@ const styles = {
     discount_show: {
         title: '是否显示',
         type: 'radio',
-        value: '1',
+        value: '0',
         options: [
             { label: '是', value: '1' },
             { label: '否', value: '0' }
@@ -136,7 +136,7 @@ const styles = {
     shop_price_title: {
         title: '销售价文案',
         type: 'text',
-        value: 'Now'
+        value: '保留价'
     }
 };
 

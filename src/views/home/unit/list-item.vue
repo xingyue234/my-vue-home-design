@@ -1,7 +1,8 @@
+
 <template>
     <div class="sub-page-item">
-        <template v-if="info.pageId">
-            <div class="sub-page-tag grey" >草稿</div>
+        <template v-if="info.id">
+            <div class="sub-page-tag grey">草稿</div>
             <!-- <div class="sub-page-tag green">1</div> -->
             <!-- <div class="sub-page-tag green">1</div> -->
             <!-- <div class="sub-page-tag warn" >1</div> -->
@@ -10,23 +11,26 @@
                 <a-icon type="mobile" />
             </div>
 
-            <img class="sub-page-image" :src="info.banner" />
+            <div class="sub-page-image" >
+				<img :src="info.banner" />
+			</div>
+			
 
             <!-- 页面信息 -->
             <div class="sub-page-info">
                 <div class="sub-page-id">
-                    ID: {{ info.pageId }} 
+                    ID: {{ info.id }} 
                 </div>
-                <div class="sub-page-title">{{ info.pageTitle }}</div>
+                <div class="sub-page-title">{{ info.pageName }}</div>
                 <div>
                     <span class="sub-page-create-time">
-                        <a-icon type="file-add" />2020-06-18 18:18:04
+                        <a-icon type="file-add" />{{info.createTime}}
                     </span>
                     <span class="sub-page-creator">{{ create_name }}</span>
                 </div>
                 <div>
                     <span class="sub-page-update-time">
-                        <a-icon type="form" />2020-06-18 18:18:04
+                        <a-icon type="form" />{{info.updateTime}}
                     </span>
                     <span class="sub-page-updator">{{ update_name }}</span>
                 </div>
@@ -102,20 +106,12 @@ export default {
 
     methods: {
         /**
-         * 删除主页面的弹窗
+         * 删除page
          */
         handle_delete () {
-            const that = this;
-            this.$confirm({
-                title: '提示',
-                content: '确定删除首页列表信息吗？删除后，不可恢复，请谨慎操作！',
-                okText: '删除',
-                okType: 'danger',
-                cancelText: '取消',
-                onOk () {
-                    that.$message.success('页面删除成功');
-                }
-            });
+			this.$emit('onDelete', {
+				pageId: this.info.id
+			})
         }
     }
 };
@@ -144,10 +140,19 @@ export default {
 }
 
 .sub-page-image {
-    display: grid;
-    width:290px;
-    height:108px;
-    border-radius: 10px 10px 0px 0px;
+	width: 100%;
+	height:108px;
+	display: grid;
+	border-radius: 10px 10px 0px 0px;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	img{
+		max-width: 100%;
+		max-height: 100%;
+	}
+    
 }
 
 .sub-page-tag {

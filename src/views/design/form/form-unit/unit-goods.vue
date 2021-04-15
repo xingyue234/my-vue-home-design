@@ -40,8 +40,8 @@
 
 
         <!-- 选择分组弹窗  -->
-        <choose-goods-data
-            ref="chooseGoodsData"
+        <choose-group-data
+            ref="chooseGroupData"
             :value.sync="current_value"
             @confirm="handle_dialog_good_confirm" />
 
@@ -52,7 +52,7 @@
 
 // 商品数据弹窗
 import goodSource from '../dialog-goods-manager/good-source.vue';
-import chooseGoodsData from '../dialog-goods-manager/choose-category.vue';
+import chooseGroupData from '../dialog-goods-manager/choose-group.vue';
 
 // Main code
 export default {
@@ -60,44 +60,38 @@ export default {
 
     components: {
         goodSource,
-        chooseGoodsData
+        chooseGroupData
     },
 
     data () {
         return {
-            current_value: this.value
+            current_value: this.value,
+			valueType: '',
+			groupData: {}
         }
     },
 
     computed: {
-        // 当前选的是商品还是商品分组
-        valueType () {
-            let goods = this.value
-            if (goods instanceof Array) {
-                return 'goods'
-            } else if (goods instanceof Object) {
-                return 'goods-category'
-            }
-        },
-        
+
         // 当前组件ID
         component_id () {
             return this.$store.state.design.selected_id;
         },
         // 是否已经设置数据
         is_data_set () {
-            if (this.valueType === 'goods') {
+			return this.value.length > 0;
+            if (this.valueType === 'good') {
                 return this.value.length > 0;
-            } else if (this.valueType === 'goods-category') {
+            } else if (this.valueType === 'good-group') {
                 return JSON.stringify(this.value) !== '{}'
             }
         },
         // 提示文案
         tips () {
-            if (this.valueType === 'goods') {
+            if (this.valueType === 'good') {
                 return `已选数量: ${this.value.length}个`;
-            } else if (this.valueType === 'goods-category'){
-                return `已选分组: ${this.value.goods_title}`;
+            } else if (this.valueType === 'good-group'){
+                return `已选分组: ${this.groupData.title}`;
             } else {
                 return ''
             }
@@ -109,22 +103,35 @@ export default {
          * 打开商品分组数据配置的弹窗 --- 分组
          */
         handle_open_good_dialog () {
-            this.$refs.chooseGoodsData.show(this.current_value);
+			this.valueType = 'good-group'
+            this.$refs.chooseGroupData.show(this.groupData);
         },
+
         /**
          * 商品分组数据配置弹窗 - 确认回调
          * @param {Object} data 商品分组数据
          */
         handle_dialog_good_confirm (data) {
-            this.current_value = data
-            this.$emit('input', this.current_value);
+			if (data instanceof Object) {
+				this.groupData = data
+				// 加载分组商品
+				const hideLoading = this.$message.loading('商品数据加载中')
+				this.$service.searchGoodsByGroup({
+					groupId: data.id
+				}).then((res) => {
+					this.current_value = res.list
+					this.$emit('input', this.current_value);
+					hideLoading()
+				})
+			}
+            // this.current_value = data
         },
 
         /**
          * 查看商品数据配置的弹窗
          */
         handle_show_dialog () {
-            if (this.valueType === 'goods') {
+            if (this.valueType === 'good') {
                 this.handle_open_dialog()
             } else {
                 this.handle_open_good_dialog()
@@ -136,7 +143,8 @@ export default {
          * 打开商品数据配置的弹窗
          */
         handle_open_dialog () {
-            this.$refs.goodSource.show(this.current_value);
+			this.valueType = 'good'
+            this.$refs.goodSource.show(this.groupData);
         },
 
         /**
@@ -145,7 +153,6 @@ export default {
          */
         handle_dialog_confirm (list) {
             this.current_value = list
-			console.log(list, '哈哈哈哈');
             this.$emit('input', list);
         },
 
@@ -155,7 +162,7 @@ export default {
          */
         handle_clear_goods () {
             this.current_value = ''
-			this.$refs.chooseGoodsData.selectedRowKeys = []
+			this.$refs.chooseGroupData.selectedRowKeys = []
             this.$emit('input', this.current_value);
         }
     }

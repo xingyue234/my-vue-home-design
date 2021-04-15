@@ -87,7 +87,8 @@ export default {
 				});
 		});
 	},
-	
+
+	// 素材列表
 	spaceList (params) {
 		return this.request({
 			url: "app/space/info/page",
@@ -134,6 +135,27 @@ export default {
 	searchGoods (params) {
 		return this.request({
 			url: "app/operation/info/searchGoods",
+			params
+		});
+	},
+	
+	searchGoodsByGroup (params) {
+		return this.request({
+			url: "group/goods/page",
+			params
+		});
+	},
+	
+	searchGroup (params) {
+		return this.request({
+			url: "group/info/page",
+			params
+		});
+	},
+	
+	searchCategory (params) {
+		return this.request({
+			url: "goods/category/list",
 			params
 		});
 	}

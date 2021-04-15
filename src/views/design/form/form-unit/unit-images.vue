@@ -67,13 +67,19 @@
             :value.sync="current_value"
             @confirm="handle_dialog_good_confirm" />
 			
-		<!-- 商品分组管理器 -->
+		<!-- 商品分类管理器 -->
 		<category-source-manager
 			ref="cateSourceManager"
 			:value.sync="current_value"
 			@confirm="handle_dialog_good_confirm" />
 
-		<!-- 输入框弹框-->
+		<!-- 商品分组管理器 -->
+		<group-source-manager
+			ref="groupSourceManager"
+			:value.sync="current_value"
+			@confirm="handle_dialog_good_confirm" />
+
+		<!-- route管理器-->
 		<route-source-manager
 		    ref="routeSourceManager"
 		    :value.sync="current_value"
@@ -88,6 +94,7 @@ import imagesSort from "../images-sort/index.vue";
 import imagesManager from "../images-manager/index.vue";
 import goodsSourceManager from "../dialog-goods-manager/choose-good.vue";
 import categorySourceManager from "../dialog-goods-manager/choose-category.vue";
+import groupSourceManager from "../dialog-goods-manager/choose-group.vue";
 import routeSourceManager from "../dialog-goods-manager/input-route.vue";
 
 // Main code
@@ -113,7 +120,8 @@ export default {
         imagesManager,
         goodsSourceManager,
 		routeSourceManager,
-		categorySourceManager
+		categorySourceManager,
+		groupSourceManager
     },
     data () {
         return {
@@ -129,8 +137,12 @@ export default {
                 },
                 {
                     name: '商品分组',
-                    code: 'good-category'
+                    code: 'good-group'
                 },
+				{
+				    name: '商品分类',
+				    code: 'good-category'
+				},
                 // {
                 //     name: '小程序微页面',
                 //     code: 'design-page'
@@ -151,13 +163,17 @@ export default {
 
     methods: {
         getValue (item) {
+			console.log(item, '哈哈哈哈');
 			if (item.link_data) {
 				switch (item.type.code) {
 					case 'good-detail':
 						return item.type.name + ' | ' + item.link_data.title;
 						break;
 					case 'good-category':
-						return item.type.name + ' | ' + item.link_data.goods_title;
+						return item.type.name + ' | ' + item.link_data.name;
+						break;
+					case 'good-group':
+						return item.type.name + ' | ' + item.link_data.title;
 						break;
 					case 'route':
 						return item.type.name + ' | ' + item.link_data;
@@ -186,6 +202,8 @@ export default {
 				// }
 			} else if (item.code === 'good-category') {
 				this.$refs.cateSourceManager.show(pItem.link_data || {});
+			} else if (item.code === 'good-group') {
+				this.$refs.groupSourceManager.show(pItem.link_data || {});
 			}
         },
 
